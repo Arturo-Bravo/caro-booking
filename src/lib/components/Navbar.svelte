@@ -5,15 +5,18 @@
 	import { goto } from '$app/navigation';
 	import * as m from '$lib/paraglide/messages.js';
 
-	const switchToLanguage = (newLanguage: AvailableLanguageTag) => {
+	let langKey = i18n.getLanguageFromUrl(page.url);
+
+	const switchToLanguage = async () => {
+		const newLang = langKey === 'en' ? 'es' : 'en';
 		const canonicalPath = i18n.route(page.url.pathname);
-		const localisedPath = i18n.resolveRoute(canonicalPath, newLanguage);
+		const localisedPath = i18n.resolveRoute(canonicalPath, newLang);
 		goto(localisedPath);
 	};
 </script>
 
-<h1>{m.hello_world({ name: 'SvelteKit User' })}</h1>
-<div>
-	<button onclick={() => switchToLanguage('en')}>en</button>
-	<button onclick={() => switchToLanguage('es')}>es</button>
-</div>
+<nav>
+	<button onclick={switchToLanguage}>
+		<h1>langKey: {langKey}</h1>
+	</button>
+</nav>
