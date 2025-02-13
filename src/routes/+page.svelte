@@ -1,2 +1,8 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+	import * as m from '$lib/paraglide/messages.js';
+	import styles from './+page.module.scss';
+</script>
+
+<div class={styles.main__header}>
+	<h1>{m.welcome()}</h1>
+</div>

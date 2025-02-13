@@ -17,6 +17,6 @@
 
 <nav>
 	<button onclick={switchToLanguage}>
-		<h1>langKey: {langKey}</h1>
+		<h1>{m.switch_lang()}</h1>
 	</button>
 </nav>
