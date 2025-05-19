@@ -1,11 +1,9 @@
 <script lang="ts">
-  import LilacFlower from './LilacFlower.svelte';
+  import FlowerBunch from './FlowerBunch.svelte';
 </script>
 
 <div class="background">
-  <LilacFlower variant={0} />
-  <LilacFlower variant={1} />
-  <LilacFlower variant={2} />
+  <FlowerBunch />
 </div>
 
 <style>

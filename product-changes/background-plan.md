@@ -15,3 +15,4 @@
   a. flowers can and should overlap each other somewhat to give a natural look
   b. this group should be called a flower bunch
   c. this component should be reusable
+5. Flowers in group should have random positionining within the group/bunch
