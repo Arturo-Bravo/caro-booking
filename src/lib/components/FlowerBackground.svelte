@@ -22,4 +22,16 @@
     z-index: -1;
   }
 
+  .background :global(.flower) {
+    transform: scale(1);
+  }
+
+  .background :global(.flower:nth-child(2)) {
+    transform: scale(1.33);
+  }
+
+  .background :global(.flower:nth-child(3)) {
+    transform: scale(0.80);
+  }
+
 </style>
