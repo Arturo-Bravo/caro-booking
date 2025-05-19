@@ -31,6 +31,11 @@
     --petal-radius: 50% 50% 50% 50% / 50% 50% 70% 70%;
   }
 
+  .flower.variation-2 {
+    --petal-color: #e6b8f5;
+    --petal-radius: 50% 50% 50% 50% / 40% 40% 80% 80%;
+  }
+
   .petal {
     position: absolute;
     width: 40px;

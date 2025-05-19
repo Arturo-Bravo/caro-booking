@@ -5,6 +5,7 @@
 <div class="background">
   <LilacFlower variant={0} />
   <LilacFlower variant={1} />
+  <LilacFlower variant={2} />
 </div>
 
 <style>
