@@ -3,7 +3,8 @@
 </script>
 
 <div class="background">
-  <LilacFlower />
+  <LilacFlower variant={0} />
+  <LilacFlower variant={1} />
 </div>
 
 <style>
@@ -16,7 +17,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #ece4f5;
-    z-index: 1;
+    background-color: var(--background-color);
+    z-index: -1;
   }
+
 </style>
