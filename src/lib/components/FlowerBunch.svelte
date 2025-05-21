@@ -48,7 +48,7 @@
 
   /* Flower classes */
   .flower-0 {
-    transform: translate(-20px, -50px) scale(1) rotate(67deg);
+    transform: translate(-20px, -50px) scale(0.65) rotate(67deg);
   }
   .flower-1 {
     transform: translate(30px, 80px) scale(0.7) rotate(83deg);
@@ -57,7 +57,7 @@
     transform: translate(-40px, 100px) scale(0.8) rotate(5deg);
   }
   .flower-3 {
-    transform: translate(10px, -30px) scale(1) rotate(22deg);
+    transform: translate(10px, -30px) scale(0.55) rotate(22deg);
   }
   .flower-4 {
     transform: translate(-15px, 20px) scale(0.7) rotate(13deg);

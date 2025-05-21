@@ -16,3 +16,8 @@
   b. this group should be called a flower bunch
   c. this component should be reusable
 5. Flowers in group should have random positionining within the group/bunch
+6. Position flower bunches along all screen borders
+  a. Place multiple flower bunches to cover the entire border area
+  b. Space bunches at equal intervals around the screen
+  c. Apply random rotations to some bunches for natural variation
+  d. Position bunches precisely at the screen edges (no initial inset)
