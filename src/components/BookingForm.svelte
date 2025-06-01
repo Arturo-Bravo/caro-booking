@@ -8,10 +8,91 @@
     notes: ''
   };
 
-  function handleSubmit() {
+  const formatPhoneNumber = (value) => {
+    // Remove all non-digit characters
+    const numbers = value.replace(/\D/g, '');
+    
+    // Format as (XXX) XXX-XXXX
+    let formatted = '';
+    if (numbers.length > 0) {
+      formatted = `(${numbers.substring(0, 3)}`;
+      if (numbers.length > 3) {
+        formatted += `) ${numbers.substring(3, 6)}`;
+      }
+      if (numbers.length > 6) {
+        formatted += `-${numbers.substring(6, 10)}`;
+      }
+    }
+    return formatted;
+  };
+
+  const handlePhoneInput = (event) => {
+    const target = event.target;
+    
+    // Save cursor position
+    const cursorPosition = target.selectionStart || 0;
+    const input = target.value;
+    
+    // Get the raw value without formatting
+    const rawValue = input.replace(/\D/g, '');
+    
+    // Format the phone number
+    const formattedValue = formatPhoneNumber(rawValue);
+    
+    // Update the form data
+    formData.phone = formattedValue;
+    
+    // Set cursor position after the state update
+    requestAnimationFrame(() => {
+      // Calculate new cursor position
+      let newCursorPosition = cursorPosition;
+      const inputLength = input.length;
+      const formattedLength = formattedValue.length;
+      
+      // If we added formatting characters, adjust cursor position
+      if (formattedLength > inputLength) {
+        // If we're at the end, keep cursor at end
+        if (cursorPosition >= inputLength) {
+          newCursorPosition = formattedLength;
+        } else if (input[cursorPosition - 1] === ' ' || input[cursorPosition - 1] === '-' || input[cursorPosition - 1] === ')') {
+          // If we're at a formatting character, move past it
+          newCursorPosition = cursorPosition + 1;
+        }
+      }
+      
+      target.setSelectionRange(newCursorPosition, newCursorPosition);
+    });
+  };
+  
+  const handlePhoneKeyDown = (event) => {
+    // Allow: backspace, delete, tab, escape, enter, and decimal point
+    if (
+      [8, 9, 27, 13, 110, 190].includes(event.keyCode) ||
+      // Allow: Ctrl+A, Cmd+A
+      (event.keyCode === 65 && (event.ctrlKey === true || event.metaKey === true)) ||
+      // Allow: Ctrl+C, Cmd+C
+      (event.keyCode === 67 && (event.ctrlKey === true || event.metaKey === true)) ||
+      // Allow: Ctrl+X, Cmd+X
+      (event.keyCode === 88 && (event.ctrlKey === true || event.metaKey === true)) ||
+      // Allow: home, end, left, right
+      (event.keyCode >= 35 && event.keyCode <= 39)
+    ) {
+      // Let it happen, don't do anything
+      return;
+    }
+    
+    // Ensure that it is a number and stop the keypress if not
+    if (event.keyCode < 48 || event.keyCode > 57) {
+      if (event.keyCode < 96 || event.keyCode > 105) {
+        event.preventDefault();
+      }
+    }
+  };
+
+  const handleSubmit = () => {
     // Will handle form submission later
     console.log('Form submitted:', formData);
-  }
+  };
 </script>
 
 <style>
@@ -61,7 +142,7 @@
     line-height: 1.5;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     resize: vertical;
-    min-height: 2.5rem;
+    min-height: 2rem;
   }
 
   textarea.form-input {
@@ -134,9 +215,13 @@
       type="tel"
       id="phone"
       bind:value={formData.phone}
+      on:input={handlePhoneInput}
+      on:keydown={handlePhoneKeyDown}
+      maxlength="14"
       required
       class="form-input"
       placeholder={m.booking_form_phone_placeholder()}
+      inputmode="numeric"
     />
   </div>
 
