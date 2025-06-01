@@ -68,3 +68,9 @@
 
 ## Performance
 - Lazy load calendar component
+
+## Language Support
+- All form fields, labels, and messages will be available in both English and Spanish
+- Language toggle button in the header allows users to switch between languages
+- Form validation messages will be displayed in the selected language
+- Date format will be consistent (MM/DD/YYYY) for all users

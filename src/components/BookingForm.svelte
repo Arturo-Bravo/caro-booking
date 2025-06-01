@@ -4,7 +4,8 @@
   let formData = {
     name: '',
     email: '',
-    phone: ''
+    phone: '',
+    notes: ''
   };
 
   function handleSubmit() {
@@ -59,6 +60,12 @@
     font-size: 1rem;
     line-height: 1.5;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    resize: vertical;
+    min-height: 2.5rem;
+  }
+
+  textarea.form-input {
+    min-height: 6rem;
   }
 
   .form-input:focus {
@@ -131,6 +138,18 @@
       class="form-input"
       placeholder={m.booking_form_phone_placeholder()}
     />
+  </div>
+
+  <!-- Notes Field -->
+  <div class="form-group">
+    <label for="notes" class="form-label">{m.booking_form_notes_label()}</label>
+    <textarea
+      id="notes"
+      bind:value={formData.notes}
+      class="form-input"
+      rows="3"
+      placeholder={m.booking_form_notes_placeholder()}
+    ></textarea>
   </div>
 
   <!-- Submit Button -->
