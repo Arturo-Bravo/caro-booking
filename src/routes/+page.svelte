@@ -9,13 +9,12 @@
 		<h1>{m.welcome()}</h1>
 		<p>Book your appointment today</p>
 	</div>
-	
+
 	<BookingForm />
 </main>
 
 <style>
 	.page-container {
-		max-width: 32rem;
 		margin: 0 auto;
 		padding: 2rem 1rem;
 	}

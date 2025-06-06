@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '../app.css';
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { i18n } from '$lib/i18n';
 	import { ParaglideJS } from '@inlang/paraglide-sveltekit';

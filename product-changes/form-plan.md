@@ -15,7 +15,7 @@
 
 ## Date & Time Selection
 1. **Calendar Component**
-   - Show current month and next month side by side
+   - Show one month at a time with navigation between months
    - Disable past dates and blackout dates
    - Visual indicators for:
      - Available dates (clickable)
