@@ -1,12 +1,14 @@
 <script>
 	import * as m from '$lib/paraglide/messages.js';
 	import DatePicker from './DatePicker.svelte';
+	import TimeSlotSelector from './TimeSlotSelector.svelte';
 
 	let formData = {
 		name: '',
 		email: '',
 		phone: '',
-		notes: ''
+		notes: '',
+		selectedTime: ''
 	};
 
 	const formatPhoneNumber = (value) => {
@@ -146,13 +148,21 @@
 		/>
 	</div>
 
-	<!-- Date Picker -->
-	<div class="form-group">
-		<!-- <label for="date" class="form-label">Select a Date</label> -->
-		<div>
-			<DatePicker />
+	<!-- Date and Time Selection -->
+	<fieldset class="form-group space-y-4">
+		<legend class="form-label mb-2 block">{m.booking_form_date_label()}</legend>
+		<div class="flex flex-col gap-4 md:flex-row">
+			<div class="date-picker">
+				<DatePicker id="date-picker" />
+			</div>
+			<div class="w-full md:w-3/5">
+				<TimeSlotSelector
+					bind:selectedTime={formData.selectedTime}
+					onTimeSelect={(time) => (formData.selectedTime = time)}
+				/>
+			</div>
 		</div>
-	</div>
+	</fieldset>
 
 	<!-- Notes Field -->
 	<div class="form-group">
@@ -192,7 +202,6 @@
 	}
 
 	.form-group {
-		/* width: 100%; */
 		margin-bottom: 1rem;
 		box-sizing: border-box;
 		/* Remove max-width to allow DatePicker to use its own width */
@@ -263,5 +272,12 @@
 	.submit-btn:focus {
 		outline: none;
 		box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+	}
+
+	.date-picker {
+		width: 200px;
+		display: flex;
+		justify-content: center;
+		margin: 0 auto;
 	}
 </style>

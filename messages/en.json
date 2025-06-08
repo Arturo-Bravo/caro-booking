@@ -12,5 +12,8 @@
 	"booking_form_phone_placeholder": "(123) 456-7890",
 	"booking_form_notes_label": "Notes",
 	"booking_form_notes_placeholder": "Any special requests or notes...",
+	"booking_form_date_label": "Select Date & Time",
+	"time_selector_label": "Select a Time",
+	"time_selector_aria_label": "Available time slots",
 	"booking_form_submit": "Submit"
 }
