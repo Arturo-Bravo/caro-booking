@@ -153,7 +153,7 @@
 		<legend class="form-label mb-2 block">{m.booking_form_date_label()}</legend>
 		<div class="flex flex-col gap-4 md:flex-row">
 			<div class="date-picker">
-				<DatePicker id="date-picker" />
+				<DatePicker />
 			</div>
 			<div class="w-full md:w-3/5">
 				<TimeSlotSelector
