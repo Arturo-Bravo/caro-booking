@@ -32,18 +32,18 @@
 	});
 
 	// Function to check if a date is available
-	function isDateAvailable(date: CalendarDate): boolean {
+	const isDateAvailable = (date: CalendarDate): boolean => {
 		return availableDays.some((availableDate) => isSameDay(availableDate, date));
-	}
+	};
 </script>
-
-<Calendar
-	bind:value
-	class="rounded-md border"
-	minValue={todayDate}
-	isDateUnavailable={(date) => !isDateAvailable(date as CalendarDate)}
-/>
 
 {#if isLoading}
 	<div class="py-4 text-center text-gray-500">Loading available dates...</div>
+{:else}
+	<Calendar
+		bind:value
+		class="rounded-md border"
+		minValue={todayDate}
+		isDateUnavailable={(date) => !isDateAvailable(date as CalendarDate)}
+	/>
 {/if}
