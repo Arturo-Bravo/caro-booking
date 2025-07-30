@@ -4,87 +4,42 @@
 	import { Calendar } from '$lib/components/ui/calendar/index.js';
 	import { bookingService } from '$lib/services/booking.service';
 
-	let currentMonth: number = new Date().getMonth() + 1;
-	let currentYear: number = new Date().getFullYear();
-	let calendarElement: HTMLElement;
-
 	const todayDate = today(getLocalTimeZone());
+	const maxDate = todayDate.add({ days: 60 });
+
 	let availableDays: CalendarDate[] = [];
 	let isLoading = true;
 	let value: CalendarDate | undefined;
 
-	// Function to load available days for a specific month and year
-	async function loadAvailableDays(month: number, year: number) {
+	// Function to load available days for the next 60 days
+	const loadAvailableDays = async () => {
 		try {
 			isLoading = true;
-			const response = await bookingService.getAvailableDays(
-				month,
-				year,
-				1 // serviceId: 1 (you might want to make this dynamic)
-			);
+			const response = await bookingService.getAvailableDays({
+				serviceId: 1, // You might want to make this dynamic
+				daysInAdvance: 60
+			});
 
 			// Convert the YYYY-MM-DD strings to CalendarDate objects
-			availableDays = response.availableDays.map((dateString) => {
+			availableDays = response.availableDays.map((dateString: string) => {
 				const [year, month, day] = dateString.split('-').map(Number);
 				return new CalendarDate(year, month, day);
 			});
 
-			// Log month change after loading data
-			console.log('Month changed to:', {
-				month,
-				year,
-				monthName: new Date(year, month - 1).toLocaleString('default', { month: 'long' })
-			});
+			console.log(
+				'Loaded available days:',
+				availableDays.length,
+				'days available in the next 60 days'
+			);
 		} catch (error) {
 			console.error('Failed to load available days:', error);
 		} finally {
 			isLoading = false;
 		}
-	}
+	};
 
 	onMount(() => {
-		// Load initial month data
-		const now = new Date();
-		loadAvailableDays(now.getMonth() + 1, now.getFullYear());
-
-		// Wait for the calendar to be rendered
-		setTimeout(() => {
-			if (calendarElement) {
-				const prevButton = calendarElement.querySelector('button[aria-label="Previous"]');
-				const nextButton = calendarElement.querySelector('button[aria-label="Next"]');
-
-				if (prevButton) {
-					prevButton.addEventListener('click', () => {
-						const prevMonth = currentMonth > 1 ? currentMonth - 1 : 12;
-						const prevYear = currentMonth > 1 ? currentYear : currentYear - 1;
-						currentMonth = prevMonth;
-						currentYear = prevYear;
-						console.log('Month changed to:', {
-							month: currentMonth,
-							year: currentYear,
-							monthName: new Date(currentYear, currentMonth - 1).toLocaleString('default', {
-								month: 'long'
-							})
-						});
-					});
-				}
-				if (nextButton) {
-					nextButton.addEventListener('click', () => {
-						const nextMonth = currentMonth < 12 ? currentMonth + 1 : 1;
-						const nextYear = currentMonth < 12 ? currentYear : currentYear + 1;
-						currentMonth = nextMonth;
-						currentYear = nextYear;
-						console.log('Month changed to:', {
-							month: currentMonth,
-							year: currentYear,
-							monthName: new Date(currentYear, currentMonth - 1).toLocaleString('default', {
-								month: 'long'
-							})
-						});
-					});
-				}
-			}
-		}, 1000);
+		loadAvailableDays();
 	});
 
 	// Function to check if a date is available
@@ -96,12 +51,14 @@
 {#if isLoading}
 	<div class="py-4 text-center text-gray-500">Loading available dates...</div>
 {:else}
-	<div bind:this={calendarElement}>
+	<div>
 		<Calendar
 			bind:value
 			class="rounded-md border"
 			minValue={todayDate}
+			maxValue={maxDate}
 			isDateUnavailable={(date) => !isDateAvailable(date as CalendarDate)}
+			{...$$restProps}
 		/>
 	</div>
 {/if}
