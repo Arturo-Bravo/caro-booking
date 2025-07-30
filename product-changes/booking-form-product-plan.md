@@ -1,90 +1,66 @@
-# Booking Form - Product Plan
+# Booking Form - Current Implementation
 
 ## Overview
-This document outlines the requirements and specifications for the booking form feature of the esthetician appointment system. The form will allow users to book appointments by selecting available time slots and providing their contact information.
+This document describes the current implementation of the booking form feature for the esthetician appointment system. The form allows users to view available dates and book appointments within a 60-day window.
 
-## Core Features
+## Current Implementation
 
-### 1. Date and Time Selection
-- Calendar view for selecting appointment date
-- Available time slots based on:
-  - Esthetician's working hours
-  - Existing appointments (prevent double-booking)
-  - Blackout dates (predefined dates when esthetician is unavailable)
-  - Minimum notice period (if any)
-  - Maximum booking window (how far in advance can be booked)
-- Standard appointment duration (to be determined)
-- Gray out unavailable/past dates and times, including blackout dates
-- Show loading state while fetching availability
-- Real-time validation to prevent race conditions when multiple users are booking
+### 1. Date Selection
+- Calendar view showing a 60-day window from the current date
+- Available dates are fetched in a single API call for the entire 60-day period
+- Past dates and dates beyond the 60-day window are disabled
+- Loading state is shown while fetching available dates
+- Uses `@internationalized/date` for robust date handling
 
-### 2. Contact Information Form
-- First Name (required)
-- Last Name (required)
-- Email (required, with validation)
-- Phone Number (required, with validation)
-- Notes/Requests (optional, text area)
+### 2. Technical Implementation
 
-### 3. Form Validation
-- Real-time validation for all fields
-- Clear error messages
-- Prevent form submission if validation fails
+#### Frontend
+- Built with Svelte and TypeScript
+- Uses a custom `DatePicker` component that extends the base calendar component
+- Responsive design that works on mobile and desktop
+- Loading states and error handling for API calls
+- Form validation for required fields
 
-### 4. Confirmation
-- Summary of booking details before submission
-- Success message with booking reference
-- Email confirmation (to be implemented later)
+#### Backend Integration
+- Single endpoint `/available-days` that accepts:
+  - `serviceId`: The ID of the service being booked
+  - `daysInAdvance`: Number of days to fetch availability for (default: 60)
+- Returns an array of available dates in YYYY-MM-DD format
 
-## Technical Requirements
+#### Data Flow
+1. On component mount, fetches available days for the next 60 days
+2. Converts API response to `CalendarDate` objects for the calendar component
+3. Disables dates that are not in the available days list
+4. Handles errors and loading states appropriately
 
-### Frontend
-- Svelte components for form elements
-- Responsive design
-- Loading states and error handling
-- Form state management
-- Real-time validation of time slot availability
-- Optimistic UI updates when selecting time slots
-
-### Backend
-- Endpoint to fetch available time slots based on:
-  - Selected date
-  - Standard appointment duration
-  - Existing appointments
-- Transaction-based booking system to prevent race conditions
-- Validation to ensure no double-booking occurs
-
-### Data Structure
 ```typescript
-interface Booking {
-  date: string; // ISO date string
-  time: string; // ISO time string
-  customer: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    notes?: string;
-  };
-  status: 'pending' | 'confirmed' | 'cancelled';
-  createdAt: string; // ISO date string
+// Simplified data flow
+interface AvailableDaysResponse {
+  availableDays: string[]; // Array of dates in YYYY-MM-DD format
 }
+
+// Booking service method
+async getAvailableDays(options: {
+  serviceId: number;
+  daysInAdvance: number;
+}): Promise<AvailableDaysResponse>;
 ```
 
-## User Flow
-1. User lands on booking page
-2. Chooses available date and time
-3. Fills in contact information
-4. Reviews booking details
-5. Submits the form
-6. Sees immediate confirmation that their request was received
-7. Receives email confirmation that their request is being processed
-8. Receives second email when esthetician confirms the appointment
-   - This email includes all appointment details and any next steps
+## Current Limitations
+1. No time slot selection yet - only date selection is implemented
+2. No contact information form implemented yet
+3. No booking submission flow yet
+4. No email notifications or confirmations
 
-## Success Metrics
-- User satisfaction (to be measured via survey)
+## Next Steps
+1. Implement time slot selection
+2. Add contact information form
+3. Implement form validation
+4. Add booking submission flow
+5. Add email notifications
+6. Add confirmation page
 
 ## Open Questions
 1. What are the working hours for the esthetician?
-2. How far in advance can appointments be made?
+2. What is the standard appointment duration?
 3. What is the cancellation policy?
