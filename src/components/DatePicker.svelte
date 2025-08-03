@@ -5,9 +5,11 @@
 	import { bookingService } from '$lib/services/booking.service';
 
 	const todayDate = today(getLocalTimeZone());
+	// Set maximum date to 60 days from today
 	const maxDate = todayDate.add({ days: 60 });
 
 	let availableDays: CalendarDate[] = [];
+	let minDate: CalendarDate | undefined;
 	let isLoading = true;
 	let value: CalendarDate | undefined;
 
@@ -20,16 +22,26 @@
 				daysInAdvance: 60
 			});
 
-			// Convert the YYYY-MM-DD strings to CalendarDate objects
-			availableDays = response.availableDays.map((dateString: string) => {
-				const [year, month, day] = dateString.split('-').map(Number);
-				return new CalendarDate(year, month, day);
-			});
+			// Convert the YYYY-MM-DD strings to CalendarDate objects and sort them
+			availableDays = response.availableDays
+				.map((dateString: string) => {
+					const [year, month, day] = dateString.split('-').map(Number);
+					return new CalendarDate(year, month, day);
+				})
+				.sort((a, b) => a.compare(b));
+
+			// Set the minimum date to the earliest available date and select it
+			if (availableDays.length > 0) {
+				minDate = availableDays[0];
+				value = minDate; // Set the selected value to the earliest available date
+			}
 
 			console.log(
 				'Loaded available days:',
 				availableDays.length,
-				'days available in the next 60 days'
+				'days available in the next 60 days',
+				'Earliest available date:',
+				minDate?.toString()
 			);
 		} catch (error) {
 			console.error('Failed to load available days:', error);
@@ -55,7 +67,7 @@
 		<Calendar
 			bind:value
 			class="rounded-md border"
-			minValue={todayDate}
+			minValue={minDate}
 			maxValue={maxDate}
 			isDateUnavailable={(date) => !isDateAvailable(date as CalendarDate)}
 			{...$$restProps}
