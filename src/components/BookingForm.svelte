@@ -159,7 +159,8 @@
 			<div class="w-full md:w-3/5">
 				<TimeSlotSelector
 					bind:selectedTime={formData.selectedTime}
-					onTimeSelect={(time) => (formData.selectedTime = time)}
+					selectedDate={formData.selectedDate}
+					onTimeSelect={(time) => console.log(time)}
 				/>
 			</div>
 		</div>
