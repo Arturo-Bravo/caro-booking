@@ -5,13 +5,17 @@
 	import { bookingService } from '$lib/services/booking.service';
 
 	const todayDate = today(getLocalTimeZone());
-	// Set maximum date to 60 days from today
-	const maxDate = todayDate.add({ days: 60 });
+	// Destructure the props we care about
+	let { value = $bindable(''), ...restProps } = $props();
+
+	// Set maximum date to 60 days from today if not provided
+	const maxDateValue = todayDate.add({ days: 60 });
 
 	let availableDays: CalendarDate[] = [];
-	let minDate: CalendarDate | undefined;
-	let isLoading = true;
-	let value: CalendarDate | undefined;
+	let isLoading = $state(true);
+	let minDate = $state(todayDate);
+
+	let selectedDate = $state(todayDate);
 
 	// Function to load available days for the next 60 days
 	const loadAvailableDays = async () => {
@@ -33,7 +37,7 @@
 			// Set the minimum date to the earliest available date and select it
 			if (availableDays.length > 0) {
 				minDate = availableDays[0];
-				value = minDate; // Set the selected value to the earliest available date
+				selectedDate = minDate; // Set the selected value to the earliest available date
 			}
 
 			console.log(
@@ -58,6 +62,13 @@
 	const isDateAvailable = (date: CalendarDate): boolean => {
 		return availableDays.some((availableDate) => isSameDay(availableDate, date));
 	};
+
+	$effect(() => {
+		if (selectedDate.toString() !== value) {
+			value = selectedDate.toString();
+			console.log(value);
+		}
+	});
 </script>
 
 {#if isLoading}
@@ -65,12 +76,12 @@
 {:else}
 	<div>
 		<Calendar
-			bind:value
+			bind:value={selectedDate}
 			class="rounded-md border"
 			minValue={minDate}
-			maxValue={maxDate}
+			maxValue={maxDateValue}
 			isDateUnavailable={(date) => !isDateAvailable(date as CalendarDate)}
-			{...$$restProps}
+			{...restProps}
 		/>
 	</div>
 {/if}

@@ -4,9 +4,26 @@ export interface AvailableDaysResponse {
 	availableDays: string[]; // Array of dates in YYYY-MM-DD format
 }
 
+export interface TimeSlot {
+	start: string; // ISO date string
+	end: string; // ISO date string
+	available: boolean;
+}
+
+export interface AvailableSlotsResponse {
+	date: string; // YYYY-MM-DD
+	available: boolean;
+	slots: TimeSlot[];
+}
+
 type AvailableDaysOptions =
 	| { serviceId: number; month: number; year: number }
 	| { serviceId: number; daysInAdvance: number };
+
+type AvailableSlotsOptions = {
+	serviceId: number;
+	date: string; // YYYY-MM-DD
+};
 
 export const bookingService = {
 	/**
@@ -17,5 +34,14 @@ export const bookingService = {
 	 */
 	getAvailableDays: async (options: AvailableDaysOptions): Promise<AvailableDaysResponse> => {
 		return apiService.get<AvailableDaysResponse>('/available-days', options);
+	},
+
+	/**
+	 * Fetches available time slots for a specific date and service
+	 * @param options Configuration including serviceId and date
+	 * @returns Promise with the available slots response
+	 */
+	getAvailableSlots: async (options: AvailableSlotsOptions): Promise<AvailableSlotsResponse> => {
+		return apiService.get<AvailableSlotsResponse>('/available-slots', options);
 	}
 };
