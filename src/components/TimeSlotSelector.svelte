@@ -3,11 +3,20 @@
 	import { bookingService, type TimeSlot } from '$lib/services/booking.service';
 	import { onMount } from 'svelte';
 
+	// Helper function to format time from 'HH:mm:ss.SSS' to 'h:mma'
+	const formatTime = (timeString: string): string => {
+		const [hours, minutes] = timeString.split(':');
+		const hour = parseInt(hours, 10);
+		const ampm = hour >= 12 ? 'pm' : 'am';
+		const hour12 = hour % 12 || 12; // Convert 0 to 12 for 12am
+		return `${hour12}:${minutes}${ampm}`;
+	};
+
 	// get selectedDate from props
 	let { selectedDate, selectedTime = $bindable(''), onTimeSelect = $bindable(() => {}) } = $props();
 
 	let isLoading = $state(true);
-	let timeSlots: TimeSlot[] = [];
+	let timeSlots = $state<TimeSlot[]>([]);
 
 	const loadAvailableTimeSlots = async () => {
 		try {
@@ -24,10 +33,6 @@
 			isLoading = false;
 		}
 	};
-
-	// onMount(() => {
-	// loadAvailableTimeSlots();
-	// });
 
 	$effect(() => {
 		loadAvailableTimeSlots();
@@ -49,9 +54,13 @@
 					class="time-slot-btn {selectedTime === slot.start
 						? 'bg-blue-500 text-white'
 						: 'border border-gray-300 bg-white text-gray-700'}"
-					onclick={() => onTimeSelect(slot.start)}
+					onclick={(e) => {
+						e.stopPropagation();
+						e.preventDefault();
+						onTimeSelect(`${slot.start} - ${slot.end}`);
+					}}
 				>
-					{slot.start.split('T')[1]} - {slot.end.split('T')[1]}
+					{formatTime(slot.start.split('T')[1])} - {formatTime(slot.end.split('T')[1])}
 				</button>
 			{/each}
 		</div>

@@ -2,15 +2,32 @@
 	import * as m from '$lib/paraglide/messages.js';
 	import DatePicker from './DatePicker.svelte';
 	import TimeSlotSelector from './TimeSlotSelector.svelte';
+	import { onMount } from 'svelte';
 
-	let formData = {
+	let formData = $state({
 		name: '',
 		email: '',
 		phone: '',
 		notes: '',
 		selectedTime: '',
 		selectedDate: ''
+	});
+
+	const resetForm = () => {
+		formData = {
+			name: '',
+			email: '',
+			phone: '',
+			notes: '',
+			selectedTime: '',
+			selectedDate: formData.selectedDate // Keep the selected date when resetting
+		};
 	};
+
+	// Reset form when component mounts
+	onMount(() => {
+		resetForm();
+	});
 
 	const formatPhoneNumber = (value) => {
 		// Remove all non-digit characters
@@ -103,7 +120,13 @@
 	};
 </script>
 
-<form on:submit|preventDefault={handleSubmit} class="form-container">
+<form
+	onsubmit={(e) => {
+		e.preventDefault();
+		handleSubmit();
+	}}
+	class="form-container"
+>
 	<h2 class="form-title">{m.booking_form_title()}</h2>
 
 	<!-- Name Field -->
@@ -139,8 +162,8 @@
 			type="tel"
 			id="phone"
 			bind:value={formData.phone}
-			on:input={handlePhoneInput}
-			on:keydown={handlePhoneKeyDown}
+			oninput={handlePhoneInput}
+			onkeydown={handlePhoneKeyDown}
 			maxlength="14"
 			required
 			class="form-input"
