@@ -38,6 +38,7 @@
 	$effect(() => {
 		if (selectedDate) {
 			loadAvailableTimeSlots();
+			selectedTime = '';
 		}
 	});
 </script>
