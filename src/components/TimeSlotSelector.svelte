@@ -13,7 +13,7 @@
 	};
 
 	// get selectedDate from props
-	let { selectedDate, selectedTime = $bindable(''), onTimeSelect = $bindable(() => {}) } = $props();
+	let { selectedDate, selectedTime = $bindable('') } = $props();
 
 	let isLoading = $state(true);
 	let timeSlots = $state<TimeSlot[]>([]);
@@ -34,8 +34,11 @@
 		}
 	};
 
+	// Only reload time slots when the date changes
 	$effect(() => {
-		loadAvailableTimeSlots();
+		if (selectedDate) {
+			loadAvailableTimeSlots();
+		}
 	});
 </script>
 
@@ -51,16 +54,16 @@
 			{#each timeSlots as slot}
 				<button
 					type="button"
-					class="time-slot-btn {selectedTime === slot.start
-						? 'bg-blue-500 text-white'
-						: 'border border-gray-300 bg-white text-gray-700'}"
+					class="time-slot-btn {selectedTime?.startsWith(slot.start)
+						? 'bg-blue-500 text-white hover:bg-blue-600'
+						: 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50'}"
 					onclick={(e) => {
 						e.stopPropagation();
 						e.preventDefault();
-						onTimeSelect(`${slot.start} - ${slot.end}`);
+						selectedTime = `${slot.start} - ${slot.end}`;
 					}}
 				>
-					{formatTime(slot.start.split('T')[1])} - {formatTime(slot.end.split('T')[1])}
+					{formatTime(slot.start)} - {formatTime(slot.end)}
 				</button>
 			{/each}
 		</div>

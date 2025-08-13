@@ -183,7 +183,6 @@
 				<TimeSlotSelector
 					bind:selectedTime={formData.selectedTime}
 					selectedDate={formData.selectedDate}
-					onTimeSelect={(time) => console.log(time)}
 				/>
 			</div>
 		</div>
