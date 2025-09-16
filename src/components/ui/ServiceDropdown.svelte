@@ -3,7 +3,7 @@
 	import { serviceService, type Service } from '$lib/services/service.service';
 	import * as m from '$lib/paraglide/messages.js';
 
-	let { value = $bindable('') } = $props<{ value?: string }>();
+	let { value = $bindable(0) } = $props<{ value?: number }>();
 	let services = $state<Service[]>([]);
 	let isLoading = $state(true);
 
@@ -14,7 +14,7 @@
 
 			// Set the first service as selected by default if none is selected
 			if (services.length > 0 && !value) {
-				value = services[0].name;
+				value = services[0].id;
 				console.log(value);
 			}
 		} catch (error) {
@@ -36,7 +36,7 @@
 {:else}
 	<select bind:value class="form-select w-full" aria-label={m.booking_form_service_label()}>
 		{#each services as service}
-			<option value={service.name}>{service.name}</option>
+			<option value={service.id}>{service.name}</option>
 		{/each}
 	</select>
 {/if}

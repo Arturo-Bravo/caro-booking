@@ -15,7 +15,7 @@
 		notes: '',
 		selectedTime: '',
 		selectedDate: '',
-		service: ''
+		serviceId: 0
 	});
 
 	const resetForm = () => {
@@ -26,7 +26,7 @@
 			notes: '',
 			selectedTime: '',
 			selectedDate: formData.selectedDate, // Keep the selected date when resetting
-			service: formData.service
+			serviceId: formData.serviceId
 		};
 	};
 
@@ -138,7 +138,7 @@
 	<!-- Service Selection -->
 	<div class="form-group">
 		<label for="service" class="form-label">{m.booking_form_service_label()}</label>
-		<ServiceDropdown bind:value={formData.service} />
+		<ServiceDropdown bind:value={formData.serviceId} />
 	</div>
 
 	<!-- Name Field -->
