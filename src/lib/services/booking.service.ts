@@ -1,5 +1,23 @@
 import { apiService } from './api.service';
 
+export interface BookingRequest {
+  email: string;
+  firstName: string;
+  lastName: string;
+  notes?: string;
+  phone: string;
+  selectedDate: string; // YYYY-MM-DD format
+  selectedTime: string; // HH:mm:ss.SSS - HH:mm:ss.SSS format
+  serviceId: number;
+}
+
+export interface BookingResponse {
+  id: string;
+  status: 'confirmed' | 'pending' | 'cancelled';
+  bookingRef: string;
+  // Add other fields as needed from your API response
+}
+
 export interface AvailableDaysResponse {
 	availableDays: string[]; // Array of dates in YYYY-MM-DD format
 }
@@ -43,5 +61,14 @@ export const bookingService = {
 	 */
 	getAvailableSlots: async (options: AvailableSlotsOptions): Promise<AvailableSlotsResponse> => {
 		return apiService.get<AvailableSlotsResponse>('/available-slots', options);
+	},
+
+	/**
+	 * Creates a new booking
+	 * @param bookingData The booking data to submit
+	 * @returns Promise with the booking response
+	 */
+	createBooking: async (bookingData: BookingRequest): Promise<BookingResponse> => {
+		return apiService.post<BookingResponse>('/bookings', bookingData);
 	}
 };

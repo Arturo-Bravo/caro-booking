@@ -4,7 +4,7 @@
 	import TimeSlotSelector from './TimeSlotSelector.svelte';
 	import ServiceDropdown from './ui/ServiceDropdown.svelte';
 	import { onMount } from 'svelte';
-	import type { Service } from '$lib/services/service.service';
+	import { bookingService } from '$lib/services/booking.service';
 
 	let selectedServiceId = $state('');
 
@@ -122,9 +122,46 @@
 		}
 	};
 
-	const handleSubmit = () => {
-		// Will handle form submission later
-		console.log('Form submitted:', formData);
+	// Handle form submission
+	const handleSubmit = async () => {
+		// Validate form data
+		if (
+			!formData.firstName ||
+			!formData.lastName ||
+			!formData.email ||
+			!formData.phone ||
+			!formData.selectedDate ||
+			!formData.selectedTime ||
+			!formData.serviceId
+		) {
+			alert('Please fill in all required fields');
+			return;
+		}
+
+		try {
+			// Format the data for the API
+			const bookingData = {
+				firstName: formData.firstName.trim(),
+				lastName: formData.lastName.trim(),
+				email: formData.email.trim(),
+				phone: formData.phone.replace(/\D/g, ''), // Remove all non-digit characters
+				notes: formData.notes?.trim(),
+				selectedDate: formData.selectedDate,
+				selectedTime: formData.selectedTime,
+				serviceId: formData.serviceId
+			};
+
+			// Submit the booking
+			await bookingService.createBooking(bookingData);
+
+			// Show success message and reset form
+			alert('Appointment booked successfully!');
+			resetForm();
+		} catch (error) {
+			console.error('Error submitting form:', error);
+			const errorMessage = error instanceof Error ? error.message : 'Failed to book appointment';
+			alert(`Error: ${errorMessage}`);
+		}
 	};
 </script>
 

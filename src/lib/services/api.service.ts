@@ -35,6 +35,29 @@ class ApiService {
 		const url = queryString ? `${endpoint}?${queryString}` : endpoint;
 		return this.request<T>(url, { method: 'GET' });
 	}
+
+	/**
+	 * Sends a POST request to the specified endpoint with the provided data
+	 * @param endpoint The API endpoint to send the request to
+	 * @param data The data to send in the request body
+	 * @param queryParams Optional query parameters
+	 * @returns Promise with the response data
+	 */
+	public post<T>(
+		endpoint: string,
+		data: unknown,
+		queryParams: Record<string, string | number> = {}
+	): Promise<T> {
+		const queryString = new URLSearchParams(
+			Object.entries(queryParams).map(([key, value]) => [key, String(value)])
+		).toString();
+
+		const url = queryString ? `${endpoint}?${queryString}` : endpoint;
+		return this.request<T>(url, {
+			method: 'POST',
+			body: JSON.stringify(data)
+		});
+	}
 }
 
 export const apiService = new ApiService();
