@@ -9,7 +9,8 @@
 	let selectedServiceId = $state('');
 
 	let formData = $state({
-		name: '',
+		firstName: '',
+		lastName: '',
 		email: '',
 		phone: '',
 		notes: '',
@@ -20,7 +21,8 @@
 
 	const resetForm = () => {
 		formData = {
-			name: '',
+			firstName: '',
+			lastName: '',
 			email: '',
 			phone: '',
 			notes: '',
@@ -141,16 +143,33 @@
 		<ServiceDropdown bind:value={formData.serviceId} />
 	</div>
 
-	<!-- Name Field -->
+	<!-- First Name Field -->
 	<div class="form-group">
-		<label for="name" class="form-label">{m.booking_form_name_label()}</label>
+		<label for="firstName" class="form-label">{m.booking_form_first_name_label()}</label>
 		<input
 			type="text"
-			id="name"
-			bind:value={formData.name}
-			required
+			id="firstName"
+			bind:value={formData.firstName}
 			class="form-input"
-			placeholder={m.booking_form_name_placeholder()}
+			required
+			minlength="1"
+			maxlength="50"
+			placeholder={m.booking_form_first_name_placeholder()}
+		/>
+	</div>
+
+	<!-- Last Name Field -->
+	<div class="form-group">
+		<label for="lastName" class="form-label">{m.booking_form_last_name_label()}</label>
+		<input
+			type="text"
+			id="lastName"
+			bind:value={formData.lastName}
+			class="form-input"
+			required
+			minlength="1"
+			maxlength="50"
+			placeholder={m.booking_form_last_name_placeholder()}
 		/>
 	</div>
 
