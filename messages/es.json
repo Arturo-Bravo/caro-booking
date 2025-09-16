@@ -4,6 +4,7 @@
 	"switch_lang": "English",
 	"welcome": "Bienvenido",
 	"booking_form_title": "Reservar una Cita",
+	"booking_form_service_label": "Servicio",
 	"booking_form_name_label": "Nombre",
 	"booking_form_name_placeholder": "Tu nombre completo",
 	"booking_form_email_label": "Correo electrónico",
@@ -15,5 +16,7 @@
 	"booking_form_date_label": "Seleccionar Fecha y Hora",
 	"time_selector_label": "Seleccionar Hora",
 	"time_selector_aria_label": "Horarios disponibles",
-	"booking_form_submit": "Enviar"
+	"booking_form_submit": "Enviar",
+	"service_dropdown_placeholder": "Selecciona un servicio",
+	"service_dropdown_no_services": "No hay servicios disponibles"
 }

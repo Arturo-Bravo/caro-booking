@@ -1,8 +1,12 @@
-<script>
+<script lang="ts">
 	import * as m from '$lib/paraglide/messages.js';
 	import DatePicker from './DatePicker.svelte';
 	import TimeSlotSelector from './TimeSlotSelector.svelte';
+	import ServiceDropdown from './ui/ServiceDropdown.svelte';
 	import { onMount } from 'svelte';
+	import type { Service } from '$lib/services/service.service';
+
+	let selectedServiceId = $state('');
 
 	let formData = $state({
 		name: '',
@@ -10,7 +14,8 @@
 		phone: '',
 		notes: '',
 		selectedTime: '',
-		selectedDate: ''
+		selectedDate: '',
+		service: ''
 	});
 
 	const resetForm = () => {
@@ -20,7 +25,8 @@
 			phone: '',
 			notes: '',
 			selectedTime: '',
-			selectedDate: formData.selectedDate // Keep the selected date when resetting
+			selectedDate: formData.selectedDate, // Keep the selected date when resetting
+			service: formData.service
 		};
 	};
 
@@ -29,7 +35,7 @@
 		resetForm();
 	});
 
-	const formatPhoneNumber = (value) => {
+	const formatPhoneNumber = (value: string): string => {
 		// Remove all non-digit characters
 		const numbers = value.replace(/\D/g, '');
 
@@ -47,8 +53,8 @@
 		return formatted;
 	};
 
-	const handlePhoneInput = (event) => {
-		const target = event.target;
+	const handlePhoneInput = (event: Event) => {
+		const target = event.target as HTMLInputElement;
 
 		// Save cursor position
 		const cursorPosition = target.selectionStart || 0;
@@ -89,7 +95,7 @@
 		});
 	};
 
-	const handlePhoneKeyDown = (event) => {
+	const handlePhoneKeyDown = (event: KeyboardEvent) => {
 		// Allow: backspace, delete, tab, escape, enter, and decimal point
 		if (
 			[8, 9, 27, 13, 110, 190].includes(event.keyCode) ||
@@ -128,6 +134,12 @@
 	class="form-container"
 >
 	<h2 class="form-title">{m.booking_form_title()}</h2>
+
+	<!-- Service Selection -->
+	<div class="form-group">
+		<label for="service" class="form-label">{m.booking_form_service_label()}</label>
+		<ServiceDropdown bind:value={formData.service} />
+	</div>
 
 	<!-- Name Field -->
 	<div class="form-group">

@@ -4,6 +4,7 @@
 	"switch_lang": "Español",
 	"welcome": "Welcome",
 	"booking_form_title": "Book an Appointment",
+	"booking_form_service_label": "Service",
 	"booking_form_name_label": "Name",
 	"booking_form_name_placeholder": "Your full name",
 	"booking_form_email_label": "Email",
@@ -15,5 +16,7 @@
 	"booking_form_date_label": "Select Date & Time",
 	"time_selector_label": "Select a Time",
 	"time_selector_aria_label": "Available time slots",
-	"booking_form_submit": "Submit"
+	"booking_form_submit": "Submit",
+	"service_dropdown_placeholder": "Select a service",
+	"service_dropdown_no_services": "No services available"
 }
