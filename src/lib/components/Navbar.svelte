@@ -15,7 +15,17 @@
 </script>
 
 <nav>
-	<button onclick={switchToLanguage}>
+	<button class="btn" onclick={switchToLanguage}>
 		<h1>{m.switch_lang()}</h1>
 	</button>
 </nav>
+
+<style>
+	.btn {
+		background-color: #000;
+		color: #fff;
+		border: 1px solid #fff;
+		padding: 10px 20px;
+		cursor: pointer;
+	}
+</style>
